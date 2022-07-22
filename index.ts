@@ -32,7 +32,7 @@ app.use("/customer", customerRoutes)
 
 
 app.get("/", (req, res) => {
-  res.json({ message: "Hello world" })
+  res.json({ message: `Server is running on port ${port}` })
 
 })
 
