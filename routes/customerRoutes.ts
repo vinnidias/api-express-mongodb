@@ -5,6 +5,9 @@ import { Customer } from "../models/Customer";
 router.post("/", async (req: Request, res: Response) => {
   const { name, email, cellphone, message } = req.body
 
+  const toLocaleTimeString = new Date().toLocaleTimeString("pt-br")
+  const dateString = new Date().toDateString()
+
   if (!name || !email || !cellphone) {
     res.status(422).json({ message: "some required data missed!" })
     return
@@ -14,7 +17,8 @@ router.post("/", async (req: Request, res: Response) => {
     name,
     email,
     cellphone,
-    message
+    message,
+    createdAt: `${dateString} ${toLocaleTimeString}`
   }
 
   try {
@@ -56,9 +60,11 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 router.patch("/:id", async (req: Request, res: Response) => {
   const id = req.params.id
+  const toLocaleTimeString = new Date().toLocaleTimeString("pt-br")
+  const dateString = new Date().toDateString()
 
   const { name, email, cellphone, message } = req.body
-  const customer = { name, email, cellphone, message }
+  const customer = { name, email, cellphone, message, updatedAt: `${dateString} ${toLocaleTimeString}` }
 
   try {
     const updateCustomer = await Customer.updateOne({ _id: id }, customer)
