@@ -12,6 +12,7 @@ const app = express();
 const dbKey = process.env.DB_KEY
 const dbUser = process.env.DB_USER
 
+const port = process.env.PORT || 3000;
 
 //Lendo JSON / middlewares
 
@@ -42,7 +43,7 @@ app.get("/", (req, res) => {
 //eviar a porta
 mongoose.connect(`mongodb+srv://${dbUser}:${dbKey}@cluster0.nbr0s.mongodb.net/?retryWrites=true&w=majority`)
   .then(() => {
-    app.listen(3000);
+    app.listen(port);
     console.log("mongodb is connected")
   })
   .catch((err) => console.log("mongodb connect fail:", err))
