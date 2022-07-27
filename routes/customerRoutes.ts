@@ -59,7 +59,7 @@ router.get("/", checkToken, async (req: Request, res: Response) => {
 })
 
 
-router.get("/:id", async (req: Request, res: Response) => {
+router.get("/:id", checkToken, async (req: Request, res: Response) => {
   const id = req.params.id
 
   try {
@@ -76,7 +76,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 })
 
 
-router.patch("/:id", async (req: Request, res: Response) => {
+router.patch("/:id", checkToken, async (req: Request, res: Response) => {
   const id = req.params.id
   const toLocaleTimeString = new Date().toLocaleTimeString("pt-br")
   const dateString = new Date().toDateString()
@@ -100,7 +100,7 @@ router.patch("/:id", async (req: Request, res: Response) => {
 
 })
 
-router.delete("/:id", async (req: Request, res: Response) => {
+router.delete("/:id", checkToken, async (req: Request, res: Response) => {
   const id = req.params.id
   const customer = await Customer.findOne({ _id: id });
   if (!customer) {
