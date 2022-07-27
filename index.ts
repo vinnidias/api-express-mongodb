@@ -4,7 +4,8 @@ require('dotenv/config');
 import express from "express";
 import mongoose from "mongoose";
 
-const customerRoutes = require("./routes/customerRoutes")
+const customerRoutes = require("./routes/customerRoutes");
+const userRouter = require("./routes/userRoutes");
 
 
 const app = express();
@@ -26,6 +27,8 @@ app.use(express.json());
 
 app.use("/customer", customerRoutes)
 
+app.use("/auth/register", userRouter)
+
 
 // rota inicial/enpoint
 
@@ -37,8 +40,6 @@ app.get("/", (req, res) => {
 })
 
 //mogo db conection 
-
-//
 
 //eviar a porta
 mongoose.connect(`mongodb+srv://${dbUser}:${dbKey}@cluster0.nbr0s.mongodb.net/?retryWrites=true&w=majority`)
