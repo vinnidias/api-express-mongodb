@@ -1,5 +1,7 @@
 const router = require("express").Router();
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
+require("dotenv");
+import jwt from "jsonwebtoken";
 import { Customer } from "../models/Customer";
 
 router.post("/", async (req: Request, res: Response) => {
@@ -30,7 +32,23 @@ router.post("/", async (req: Request, res: Response) => {
   }
 })
 
-router.get("/", async (req: Request, res: Response) => {
+function checkToken(req: Request, res: Response, next: NextFunction) {
+  const authHeader = req.headers["authorization"]
+  const token = authHeader && authHeader.split(" ")[1]
+  if (!token) {
+    return res.status(401).json({ message: "Acesso negado!" })
+  }
+  try {
+    const secret = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyZTE0YzZkNDQ3ZDZmMzhiMjYxMTliOCIsImlhdCI6MTY1ODk0MjUzNn0.RYmjW1jANLPvGAIGdbKFfMC-4qgBUvZsmueYKyWD0-I"
+    jwt.verify(token, secret);
+
+    next()
+  } catch (error) {
+    res.status(400).json({ message: "token inválido" })
+  }
+}
+
+router.get("/", checkToken, async (req: Request, res: Response) => {
   try {
     const allCustomers = await Customer.find();
     res.status(200).json(allCustomers)
