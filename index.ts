@@ -5,7 +5,8 @@ import express from "express";
 import mongoose from "mongoose";
 
 const customerRoutes = require("./routes/customerRoutes");
-const userRouter = require("./routes/userRoutes");
+const registerUserRouter = require("./routes/registerUserRoute");
+const authLoginRoute = require ("./routes/authLoginRoute");
 
 
 const app = express();
@@ -25,9 +26,11 @@ app.use(
 
 app.use(express.json());
 
-app.use("/customer", customerRoutes)
+app.use("/customer", customerRoutes);
 
-app.use("/auth/register", userRouter)
+app.use("/auth/register", registerUserRouter);
+
+app.use("/auth/login", authLoginRoute)
 
 
 // rota inicial/enpoint
