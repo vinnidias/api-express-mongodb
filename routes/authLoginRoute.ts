@@ -19,6 +19,12 @@ router.post("/", async (req: Request, res: Response) => {
   }
 
   const user = await User.findOne({ email: email });
+  const userReturnedObject = {
+    id: user?._id,
+    name: user?.name,
+    email: user?.email,
+    createdAt: user?.createdAt
+  } 
 
   if (!user) {
     return res.status(404).json({ message: "Usuário não encontrado" })
@@ -37,7 +43,7 @@ router.post("/", async (req: Request, res: Response) => {
       id: user._id,
     }, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyZTE0YzZkNDQ3ZDZmMzhiMjYxMTliOCIsImlhdCI6MTY1ODk0MjUzNn0.RYmjW1jANLPvGAIGdbKFfMC-4qgBUvZsmueYKyWD0-I")
 
-    res.status(200).json({ message: "Autenticação realizada com sucesso.", token })
+    res.status(200).json({ message: "Autenticação realizada com sucesso.", token, user: userReturnedObject })
 
   } catch (error) {
     res.status(500).json({ message: "Erro no servidor, tente mais tarde" });
